@@ -1,36 +1,13 @@
 <template>
-  <div id="app">
-    <HelloWorld/>
+  <div id="app" about="fillcontain">
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-  import HelloWorld from './components/demo/HelloWorld'
-  // import Events from './components/Event'
-  // import Formdata from './components/Formdata'
-  // import Style from './components/Style'
-  //import Parent from './components/slot/Parent'
-  //import Todolist from './components/todolist/todolist'
-
-  export default {
-    name: 'App',
-    components: {
-      HelloWorld,
-      // Events,
-      // Formdata,
-      // Style,
-      //Parent
-      //Todolist
-    }
-  }
+  export default {}
 </script>
 
-<style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-  }
+<style lang="less">
+  @import './style/common';
 </style>
