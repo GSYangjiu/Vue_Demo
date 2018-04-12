@@ -1,7 +1,7 @@
 # ele
 
-> A Vue.js project
-
+> 基于Vue 实现一个饿了么后台管理系统，学习vue的过程中练手
+ 
 ## Build Setup
 
 ``` bash
@@ -18,4 +18,3 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
