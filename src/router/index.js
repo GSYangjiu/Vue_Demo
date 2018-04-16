@@ -12,18 +12,17 @@ const userList = r => require.ensure([], () => r(require('@/page/userList')), 'u
 const adminList = r => require.ensure([], () => r(require('@/page/adminList')), 'adminList');
 const orderList = r => require.ensure([], () => r(require('@/page/orderList')), 'orderList');
 const foodList = r => require.ensure([], () => r(require('@/page/foodList')), 'foodList');
-
-/*
 const shopList = r => require.ensure([], () => r(require('@/page/shopList')), 'shopList');
-
-
 const visitor = r => require.ensure([], () => r(require('@/page/visitor')), 'visitor');
+const explain = r => require.ensure([], () => r(require('@/page/explain')), 'explain');
+const adminSet = r => require.ensure([], () => r(require('@/page/adminSet')), 'adminSet');
+const vueEdit = r => require.ensure([], () => r(require('@/page/vueEdit')), 'vueEdit');
+/*
+
 const newMember = r => require.ensure([], () => r(require('@/page/newMember')), 'newMember');
 const uploadImg = r => require.ensure([], () => r(require('@/page/uploadImg')), 'uploadImg');
-const vueEdit = r => require.ensure([], () => r(require('@/page/vueEdit')), 'vueEdit');
-const adminSet = r => require.ensure([], () => r(require('@/page/adminSet')), 'adminSet');
 const sendMessage = r => require.ensure([], () => r(require('@/page/sendMessage')), 'sendMessage');
-const explain = r => require.ensure([], () => r(require('@/page/explain')), 'explain');*/
+*/
 
 const routes = [
     {
@@ -61,6 +60,26 @@ const routes = [
             path: '/foodList',
             component: foodList,
             meta: ['数据管理', '食品列表'],
+        }, {
+            path: '/shopList',
+            component: shopList,
+            meta: ['数据管理', '商家列表']
+        }, {
+            path: '/visitor',
+            component: visitor,
+            meta: ['图表', '用户分布']
+        }, {
+            path: '/adminSet',
+            component: adminSet,
+            meta: ['设置', '管理员设置']
+        }, {
+            path: '/explain',
+            component: explain,
+            meta: ['说明', '用户说明']
+        }, {
+            path: '/vueEdit',
+            component: vueEdit,
+            meta: ['编辑', '文本编辑']
         }]
     }
 ]
