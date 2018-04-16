@@ -10,7 +10,7 @@
                 style="width: 100%"
             >
                 <el-table-column type="expand">
-                    <template scope="props">
+                    <template slot-scope="props">
                         <el-form label-position="left" inline class="demo-table-expand">
                             <el-form-item label="用户名">
                                 <span>{{ props.row.user_name }}</span>
