@@ -41,7 +41,7 @@
                 <el-table-column label="商铺地址" prop="address"></el-table-column>
                 <el-table-column label="商铺介绍" prop="description"></el-table-column>
                 <el-table-column label="操作" width="200">
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         <el-button
                             size="mini"
                             @click="handleEdit(scope.$index, scope.row)">编辑
