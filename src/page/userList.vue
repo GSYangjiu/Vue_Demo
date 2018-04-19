@@ -26,6 +26,7 @@
 <script>
     import headTop from '../components/headTop'
     import {getUserList, getUserCount} from '@/api/getData'
+    import {dateFormat} from '@/utils/DateUtils'
 
     export default {
         name: "userList",
@@ -65,7 +66,7 @@
             async initData() {
                 try {
                     const countData = await getUserCount();
-                    if (countData.status == 1) {
+                    if (countData.status == 10000) {
                         this.count = countData.count;
                     } else {
                         throw new Error('获取数据失败');
@@ -88,8 +89,8 @@
                 this.tableData = [];
                 Users.forEach(item => {
                     const tableData = {};
-                    tableData.username = item.username;
-                    tableData.registe_time = item.registe_time;
+                    tableData.username = item.name;
+                    tableData.registe_time = dateFormat(item.createTime);
                     tableData.city = item.city;
                     this.tableData.push(tableData);
                 })
