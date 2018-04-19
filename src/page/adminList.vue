@@ -7,7 +7,7 @@
                 <el-table-column property="user_name" label="用户名" width="180"></el-table-column>
                 <el-table-column property="create_time" label="注册日期" width="220"></el-table-column>
                 <el-table-column property="city" label="地址" width="180"></el-table-column>
-                <el-table-column property="admin" label="权限"></el-table-column>
+                <el-table-column property="authority" label="权限"></el-table-column>
             </el-table>
             <div class="Pagination" style="text-align: left;margin-top: 10px;">
                 <el-pagination
@@ -26,6 +26,7 @@
 <script>
     import headTop from '../components/headTop'
     import {adminList, adminCount} from '@/api/getData'
+    import {dateFormat} from '@/utils/DateUtils'
 
     export default {
         name: "adminList",
@@ -49,8 +50,8 @@
             async initData() {
                 try {
                     const countData = await adminCount();
-                    if (countData.status == 1) {
-                        this.count = countData.count;
+                    if (countData.status == 10000) {
+                        this.count = countData.map.count;
                     } else {
                         console.log('获取数据失败');
                     }
@@ -70,22 +71,25 @@
             async getAdminList() {
                 try {
                     const res = await adminList({offset: this.offset, limit: this.limit});
-                    if (res.status == 1) {
-                        this.tableData = [];
-                        res.data.forEach(item => {
-                            const tableItem = {
-                                create_time: item.create_time,
-                                user_name: item.user_name,
-                                admin: item.admin,
-                                city: item.city,
-                            };
-                            this.tableData.push(tableItem)
-                        });
-                    } else {
-                        throw new Error(res.message)
-                    }
+                    this.tableData = [];
+                    res.forEach(item => {
+                        const tableItem = {
+                            create_time: dateFormat(item.createTime),
+                            user_name: item.username,
+                            authority: this.authority(item.authority),
+                            city: item.city,
+                        };
+                        this.tableData.push(tableItem)
+                    });
                 } catch (err) {
                     console.log('获取数据失败', err)
+                }
+            },
+            authority(res) {
+                if (res == 0) {
+                    return '管理员';
+                } else if (res == 1) {
+                    return '超级管理员';
                 }
             }
         }

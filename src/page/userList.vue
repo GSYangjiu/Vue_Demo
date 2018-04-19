@@ -67,7 +67,7 @@
                 try {
                     const countData = await getUserCount();
                     if (countData.status == 10000) {
-                        this.count = countData.count;
+                        this.count = countData.map.count;
                     } else {
                         throw new Error('获取数据失败');
                     }
