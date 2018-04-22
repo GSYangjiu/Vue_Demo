@@ -31,7 +31,7 @@ module.exports = {
     context: [ //代理路径
         '/user',
         '/admin',
-        '/shopping',
+        '/shop',
         '/ugc',
         '/bos',
         '/member',

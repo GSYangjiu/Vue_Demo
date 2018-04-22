@@ -17,7 +17,7 @@
                                 <span>{{ props.row.address}}</span>
                             </el-form-item>
                             <el-form-item label="商铺介绍">
-                                <span>{{ props.row.desaturate }}</span>
+                                <span>{{ props.row.description }}</span>
                             </el-form-item>
                             <el-form-item label="商铺 ID">
                                 <span>{{ props.row.id }}</span>
@@ -161,10 +161,10 @@
         methods: {
             async initData() {
                 try {
-                    this.city = await cityGuess();
+                    //this.city = await cityGuess();
                     const countData = await getResturantsCount();
-                    if (countData.status == 1) {
-                        this.count = countData.count;
+                    if (countData.status == 10000) {
+                        this.count = countData.map.count;
                     } else {
                         throw new Error('获取数据失败');
                     }
@@ -201,7 +201,7 @@
             },
             async getResturants() {
                 const {latitude, longitude} = this.city;
-                const restaurants = await getResturants({latitude, longitude, offset: this.offset, limit: this.limit});
+                const restaurants = await getResturants({offset: this.offset, limit: this.limit});
                 this.tableData = [];
                 restaurants.forEach(item => {
                     const tableData = {};
@@ -211,8 +211,8 @@
                     tableData.id = item.id;
                     tableData.phone = item.phone;
                     tableData.rating = item.rating;
-                    tableData.recent_order_num = item.recent_order_num;
-                    tableData.category = item.category;
+                    tableData.recent_order_num = item.sale;
+                    tableData.category = item.type;
                     tableData.image_path = item.image_path;
                     this.tableData.push(tableData);
                 })
@@ -240,7 +240,7 @@
             async handleDelete(index, row) {
                 try {
                     const res = await deleteResturant(row.id);
-                    if (res.status == 1) {
+                    if (res.status == 10000) {
                         this.$message({
                             type: 'success',
                             message: '删除店铺成功'
