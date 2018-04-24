@@ -29,7 +29,7 @@
                                 <span>{{ props.row.rating }}</span>
                             </el-form-item>
                             <el-form-item label="销售量">
-                                <span>{{ props.row.recent_order_number }}</span>
+                                <span>{{ props.row.recent_order_num }}</span>
                             </el-form-item>
                             <el-form-item label="分类">
                                 <span>{{ props.row.category }}</span>
