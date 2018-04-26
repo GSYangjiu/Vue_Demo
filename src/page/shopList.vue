@@ -177,13 +177,13 @@
                 try {
                     const categories = await foodCategory();
                     categories.forEach(item => {
-                        if (item.sub_categories.length) {
+                        if (item.child.length) {
                             const addnew = {
-                                value: item.name,
-                                label: item.name,
+                                value: item.categories.name,
+                                label: item.categories.name,
                                 children: []
                             }
-                            item.sub_categories.forEach((subitem, index) => {
+                            item.child.forEach((subitem, index) => {
                                 if (index == 0) {
                                     return
                                 }
@@ -212,7 +212,7 @@
                     tableData.phone = item.phone;
                     tableData.rating = item.rating;
                     tableData.recent_order_num = item.sale;
-                    tableData.category = item.type;
+                    tableData.category = item.category;
                     tableData.image_path = item.image_path;
                     this.tableData.push(tableData);
                 })
@@ -302,7 +302,7 @@
                     Object.assign(this.selectTable, this.address);
                     this.selectTable.category = this.selectedCategory.join('/');
                     const res = await updateResturant(this.selectTable);
-                    if (res.status == 1) {
+                    if (res.status == 10000) {
                         this.$message({
                             type: 'success',
                             message: '更新店铺信息成功'
@@ -324,26 +324,32 @@
 
 <style lang="less" scoped>
     @import '../style/mixin';
+
     .demo-table-expand {
         font-size: 0;
     }
+
     .demo-table-expand label {
         width: 90px;
         color: #99a9bf;
     }
+
     .demo-table-expand .el-form-item {
         margin-right: 0;
         margin-bottom: 0;
         width: 50%;
     }
-    .table_container{
+
+    .table_container {
         padding: 20px;
     }
-    .Pagination{
+
+    .Pagination {
         display: flex;
         justify-content: flex-start;
         margin-top: 8px;
     }
+
     .avatar-uploader .el-upload {
         border: 1px dashed #d9d9d9;
         border-radius: 6px;
@@ -351,9 +357,11 @@
         position: relative;
         overflow: hidden;
     }
+
     .avatar-uploader .el-upload:hover {
         border-color: #20a0ff;
     }
+
     .avatar-uploader-icon {
         font-size: 28px;
         color: #8c939d;
@@ -362,6 +370,7 @@
         line-height: 120px;
         text-align: center;
     }
+
     .avatar {
         width: 120px;
         height: 120px;

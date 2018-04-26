@@ -116,7 +116,7 @@ export const addFood = data => fetch('/shopping/addfood', data, 'POST');
  * category 种类列表
  */
 
-export const foodCategory = (latitude, longitude) => fetch('/shopping/v2/restaurant/category');
+export const foodCategory = () => fetch('/shop/category');
 
 /**
  * 获取餐馆列表
@@ -140,7 +140,7 @@ export const getResturantsCount = () => fetch('/shop/count');
  * 更新餐馆信息
  */
 
-export const updateResturant = data => fetch('/shopping/updateshop', data, 'POST');
+export const updateResturant = data => fetch('/shop/updateShop', data, 'PUT');
 
 /**
  * 删除餐馆
