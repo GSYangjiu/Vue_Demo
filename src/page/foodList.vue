@@ -4,7 +4,6 @@
         <div class="table_container">
             <el-table
                 :data="tableData"
-                @expand='expand'
                 :expand-row-keys='expendRow'
                 :row-key="row => row.index"
                 style="width: 100%">
@@ -18,7 +17,7 @@
                                 <span>{{ props.row.restaurant_name }}</span>
                             </el-form-item>
                             <el-form-item label="食品 ID">
-                                <span>{{ props.row.item_id }}</span>
+                                <span>{{ props.row.id }}</span>
                             </el-form-item>
                             <el-form-item label="餐馆 ID">
                                 <span>{{ props.row.restaurant_id }}</span>
@@ -33,7 +32,7 @@
                                 <span>{{ props.row.rating }}</span>
                             </el-form-item>
                             <el-form-item label="食品分类">
-                                <span>{{ props.row.category_name }}</span>
+                                <span>{{ props.row.type }}</span>
                             </el-form-item>
                             <el-form-item label="月销量">
                                 <span>{{ props.row.month_sales }}</span>
@@ -51,7 +50,7 @@
                 </el-table-column>
                 <el-table-column
                     label="评分"
-                    prop="">
+                    prop="rating">
                 </el-table-column>
                 <el-table-column label="操作" width="160">
                     <template slot-scope="scope">
@@ -95,6 +94,13 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
+                    <!--                    <el-form-item label="店铺分类" label-width="100px">
+                                            <el-cascader
+                                                :options="categoryOptions"
+                                                v-model="selectedCategory"
+                                                change-on-select
+                                            ></el-cascader>
+                                        </el-form-item>-->
                     <el-form-item label="食品图片" label-width="100px">
                         <el-upload
                             class="avatar-uploader"
@@ -172,11 +178,9 @@
     import {
         getFoods,
         getFoodsCount,
-        getMenu,
+        getFoodTypeList,
         updateFood,
-        deleteFood,
-        getResturantDetail,
-        getMenuById
+        deleteFood
     } from '@/api/getData'
 
     export default {
@@ -236,8 +240,8 @@
             async initData() {
                 try {
                     const countData = await getFoodsCount({restaurant_id: this.restaurant_id});
-                    if (countData.status == 1) {
-                        this.count = countData.count;
+                    if (countData.status == 10000) {
+                        this.count = countData.map.count;
                     } else {
                         throw new Error('获取数据失败');
                     }
@@ -246,37 +250,25 @@
                     console.log('获取数据失败', err);
                 }
             },
-            async getMenu() {
-                this.menuOptions = [];
-                try {
-                    const menu = await getMenu({restaurant_id: this.selectTable.restaurant_id, allMenu: true});
-                    menu.forEach((item, index) => {
-                        this.menuOptions.push({
-                            label: item.name,
-                            value: item.id,
-                            index,
-                        })
-                    })
-                } catch (err) {
-                    console.log('获取食品种类失败', err);
-                }
-            },
             async getFoods() {
                 const Foods = await getFoods({
                     offset: this.offset,
                     limit: this.limit,
-                    restaurant_id: this.restaurant_id
+                    shopId: this.restaurant_id
                 });
                 this.tableData = [];
                 Foods.forEach((item, index) => {
                     const tableData = {};
                     tableData.name = item.name;
-                    tableData.item_id = item.item_id;
+                    tableData.id = item.id;
+                    tableData.restaurant_id = item.shopId;
+                    tableData.restaurant_name = item.shopName;
+                    tableData.restaurant_address = item.shopAddress;
                     tableData.description = item.description;
                     tableData.rating = item.rating;
-                    tableData.month_sales = item.month_sales;
-                    tableData.restaurant_id = item.restaurant_id;
-                    tableData.category_id = item.category_id;
+                    tableData.month_sales = item.sale;
+                    tableData.type = item.type;
+                    tableData.type_id = item.typeId;
                     tableData.image_path = item.image_path;
                     tableData.specfoods = item.specfoods;
                     tableData.index = index;
@@ -309,36 +301,25 @@
                 this.offset = (val - 1) * this.limit;
                 this.getFoods()
             },
-            expand(row, status) {
-                if (status) {
-                    this.getSelectItemData(row)
-                } else {
-                    const index = this.expendRow.indexOf(row.index);
-                    this.expendRow.splice(index, 1)
-                }
-            },
             handleEdit(row) {
-                this.getSelectItemData(row, 'edit')
                 this.dialogFormVisible = true;
+                this.selectTable = row;
+                this.selectMenu = {label: row.type, value: row.type_id};
+                this.getType();
             },
-            async getSelectItemData(row, type) {
-                const restaurant = await getResturantDetail(row.restaurant_id);
-                const category = await getMenuById(row.category_id);
-                this.selectTable = {
-                    ...row, ...{
-                        restaurant_name: restaurant.name,
-                        restaurant_address: restaurant.address,
-                        category_name: category.name
-                    }
-                };
-
-                this.selectMenu = {label: category.name, value: row.category_id}
-                this.tableData.splice(row.index, 1, {...this.selectTable});
-                this.$nextTick(() => {
-                    this.expendRow.push(row.index);
-                })
-                if (type == 'edit' && this.restaurant_id != row.restaurant_id) {
-                    this.getMenu();
+            async getType() {
+                this.menuOptions = [];
+                try {
+                    const menu = await getFoodTypeList();
+                    menu.forEach((item, index) => {
+                        this.menuOptions.push({
+                            label: item.type,
+                            value: item.id,
+                            index,
+                        })
+                    })
+                } catch (err) {
+                    console.log('获取食品种类失败', err);
                 }
             },
             handleSelect(index) {

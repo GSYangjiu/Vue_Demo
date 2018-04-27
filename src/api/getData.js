@@ -125,12 +125,6 @@ export const foodCategory = () => fetch('/shop/category');
 export const getResturants = data => fetch('/shop/list', data);
 
 /**
- * 获取餐馆详细信息
- */
-
-export const getResturantDetail = restaurant_id => fetch('/shopping/restaurant/' + restaurant_id);
-
-/**
  * 获取餐馆数量
  */
 
@@ -152,26 +146,19 @@ export const deleteResturant = restaurant_id => fetch('/shop/' + restaurant_id, 
  * 获取食品列表
  */
 
-export const getFoods = data => fetch('/shopping/v2/foods', data);
+export const getFoods = data => fetch('/goods/list', data);
 
 /**
  * 获取食品数量
  */
 
-export const getFoodsCount = data => fetch('/shopping/v2/foods/count', data);
-
-
-/**
- * 获取menu列表
- */
-
-export const getMenu = data => fetch('/shopping/v2/menu', data);
+export const getFoodsCount = data => fetch('/goods/count', data);
 
 /**
- * 获取menu详情
+ * 获取食品分类列表
  */
+export const getFoodTypeList = () => fetch('/goods/typeList');
 
-export const getMenuById = category_id => fetch('/shopping/v2/menu/' + category_id);
 
 /**
  * 更新食品信息
@@ -183,7 +170,7 @@ export const updateFood = data => fetch('/shopping/v2/updatefood', data, 'POST')
  * 删除食品
  */
 
-export const deleteFood = food_id => fetch('/shopping/v2/food/' + food_id, {}, 'DELETE');
+export const deleteFood = food_id => fetch('/goods/' + food_id, {}, 'DELETE');
 
 /**
  * 获取用户列表

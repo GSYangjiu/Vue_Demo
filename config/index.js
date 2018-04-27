@@ -32,6 +32,7 @@ module.exports = {
         '/user',
         '/admin',
         '/shop',
+        '/goods',
         '/ugc',
         '/bos',
         '/member',
