@@ -164,7 +164,7 @@ export const getFoodTypeList = () => fetch('/goods/typeList');
  * 更新食品信息
  */
 
-export const updateFood = data => fetch('/shopping/v2/updatefood', data, 'POST');
+export const updateFood = data => fetch('/goods/updateFood', data, 'PUT');
 
 /**
  * 删除食品
