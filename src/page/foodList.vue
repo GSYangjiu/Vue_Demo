@@ -94,13 +94,6 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <!--                    <el-form-item label="店铺分类" label-width="100px">
-                                            <el-cascader
-                                                :options="categoryOptions"
-                                                v-model="selectedCategory"
-                                                change-on-select
-                                            ></el-cascader>
-                                        </el-form-item>-->
                     <el-form-item label="食品图片" label-width="100px">
                         <el-upload
                             class="avatar-uploader"
@@ -332,8 +325,8 @@
             },
             async handleDelete(index, row) {
                 try {
-                    const res = await deleteFood(row.item_id);
-                    if (res.status == 1) {
+                    const res = await deleteFood(row.id);
+                    if (res.status == 10000) {
                         this.$message({
                             type: 'success',
                             message: '删除食品成功'

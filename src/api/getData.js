@@ -125,6 +125,11 @@ export const foodCategory = () => fetch('/shop/category');
 export const getResturants = data => fetch('/shop/list', data);
 
 /**
+ * 获取餐馆详情
+ */
+export const getResturantDetail = restaurant_id => fetch('/shop/' + restaurant_id);
+
+/**
  * 获取餐馆数量
  */
 
@@ -188,25 +193,25 @@ export const getUserCount = data => fetch('/user/count', data);
  * 获取订单列表
  */
 
-export const getOrderList = data => fetch('/bos/orders', data);
+export const getOrderList = data => fetch('/orders/list', data);
 
 /**
  * 获取订单数量
  */
 
-export const getOrderCount = data => fetch('/bos/orders/count', data);
+export const getOrderCount = data => fetch('/orders/count', data);
 
 /**
  * 获取用户信息
  */
 
-export const getUserInfo = user_id => fetch('/v1/user/' + user_id);
+export const getUserInfo = user_id => fetch('/user/' + user_id);
 
 /**
  * 获取地址信息
  */
 
-export const getAddressById = address_id => fetch('/v1/addresse/' + address_id);
+export const getAddressById = address_id => fetch('/user/address/' + address_id);
 
 /**
  * 获取用户分布信息

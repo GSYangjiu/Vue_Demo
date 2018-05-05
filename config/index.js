@@ -33,7 +33,7 @@ module.exports = {
         '/admin',
         '/shop',
         '/goods',
-        '/ugc',
+        '/orders',
         '/bos',
         '/member',
         '/promotion',

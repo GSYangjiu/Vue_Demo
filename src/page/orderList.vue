@@ -22,7 +22,7 @@
                                 <span>{{ props.row.address }}</span>
                             </el-form-item>
                             <el-form-item label="店铺 ID">
-                                <span>{{ props.row.restaurant_id }}</span>
+                                <span>{{ props.row.shop_id }}</span>
                             </el-form-item>
                             <el-form-item label="店铺地址">
                                 <span>{{ props.row.restaurant_address }}</span>
@@ -33,6 +33,7 @@
                 <el-table-column property="id" label="订单 ID" width="180"></el-table-column>
                 <el-table-column property="total_amount" label="总价格" width="220"></el-table-column>
                 <el-table-column property="status" label="支付状态"></el-table-column>
+                <el-table-column property="create_time" label="创建时间"></el-table-column>
             </el-table>
             <div class="Pagination" style="text-align: left;margin-top: 10px;">
                 <el-pagination
@@ -50,6 +51,8 @@
 
 <script>
     import headTop from '../components/headTop'
+    import {dateFormat} from '@/utils/DateUtils'
+    import {Enum} from '@/utils/Enum'
     import {getOrderList, getOrderCount, getResturantDetail, getUserInfo, getAddressById} from '@/api/getData'
 
     export default {
@@ -57,33 +60,33 @@
         components: {
             headTop
         },
-        data(){
-            return{
+        data() {
+            return {
                 tableData: [],
                 currentRow: null,
                 offset: 0,
                 limit: 20,
                 count: 0,
                 currentPage: 1,
-                restaurant_id: null,
+                shop_id: "",
                 expendRow: [],
             }
         },
-        created(){
-            this.restaurant_id = this.$route.query.restaurant_id;
+        created() {
+            this.shop_id = this.$route.query.shop_id;
             this.initData();
         },
         methods: {
-            async initData(){
-                try{
-                    const countData = await getOrderCount({restaurant_id: this.restaurant_id});
-                    if (countData.status == 1) {
-                        this.count = countData.count;
-                    }else{
+            async initData() {
+                try {
+                    const countData = await getOrderCount(this.shop_id);
+                    if (countData.status == 10000) {
+                        this.count = countData.map.count;
+                    } else {
                         throw new Error('获取数据失败');
                     }
                     this.getOrders();
-                }catch(err){
+                } catch (err) {
                     console.log('获取数据失败', err);
                 }
             },
@@ -92,35 +95,43 @@
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
-                this.offset = (val - 1)*this.limit;
+                this.offset = (val - 1) * this.limit;
                 this.getOrders()
             },
-            async getOrders(){
-                const Orders = await getOrderList({offset: this.offset, limit: this.limit, restaurant_id: this.restaurant_id});
+            async getOrders() {
+                const Orders = await getOrderList({offset: this.offset, limit: this.limit, shop_id: this.shop_id});
                 this.tableData = [];
                 Orders.forEach((item, index) => {
                     const tableData = {};
                     tableData.id = item.id;
-                    tableData.total_amount = item.total_amount;
-                    tableData.status = item.status_bar.title;
-                    tableData.user_id = item.user_id;
-                    tableData.restaurant_id = item.restaurant_id;
-                    tableData.address_id = item.address_id;
+                    tableData.total_amount = item.price;
+                    tableData.status = Enum.OrderStatus[item.status];
+                    tableData.user_id = item.userId;
+                    tableData.shop_id = item.shopId;
+                    tableData.address_id = item.addressNum;
+                    tableData.create_time = dateFormat(item.createTime);
                     tableData.index = index;
                     this.tableData.push(tableData);
                 })
             },
-            async expand(row, status){
+            async expand(row, status) {
                 if (status) {
-                    const restaurant = await getResturantDetail(row.restaurant_id);
+                    const restaurant = await getResturantDetail(row.shop_id);
                     const userInfo = await getUserInfo(row.user_id);
                     const addressInfo = await getAddressById(row.address_id);
 
-                    this.tableData.splice(row.index, 1, {...row, ...{restaurant_name: restaurant.name, restaurant_address: restaurant.address, address: addressInfo.address, user_name: userInfo.username}});
+                    this.tableData.splice(row.index, 1, {
+                        ...row, ...{
+                            restaurant_name: restaurant.name,
+                            restaurant_address: restaurant.address,
+                            address: addressInfo.address,
+                            user_name: userInfo.name
+                        }
+                    });
                     this.$nextTick(() => {
                         this.expendRow.push(row.index);
                     })
-                }else{
+                } else {
                     const index = this.expendRow.indexOf(row.index);
                     this.expendRow.splice(index, 1)
                 }
@@ -139,10 +150,12 @@
     .demo-table-expand {
         font-size: 0;
     }
+
     .demo-table-expand label {
         width: 90px;
         color: #99a9bf;
     }
+
     .demo-table-expand .el-form-item {
         margin-right: 0;
         margin-bottom: 0;
