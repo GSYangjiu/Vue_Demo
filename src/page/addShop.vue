@@ -243,29 +243,29 @@
         methods: {
             async initData() {
                 try {
-                    this.city = await cityGuess();
+                    //this.city = await cityGuess();
                     const categories = await foodCategory();
                     categories.forEach(item => {
-                        if (item.sub_categories.length) {
+                        if (item.child.length) {
                             const addnew = {
-                                value: item.name,
-                                label: item.name,
+                                value: item.categories.name,
+                                label: item.categories.name,
                                 children: []
-                            };
-                            item.sub_categories.forEach((subitem, index) => {
+                            }
+                            item.child.forEach((subitem, index) => {
                                 if (index == 0) {
-                                    return;
+                                    return
                                 }
                                 addnew.children.push({
                                     value: subitem.name,
                                     label: subitem.name,
                                 })
-                            });
+                            })
                             this.categoryOptions.push(addnew)
                         }
                     })
                 } catch (err) {
-                    console.log(err);
+                    console.log('获取商铺种类失败', err);
                 }
             },
 

@@ -57,7 +57,7 @@
                             type: 'value',
                             name: '用户',
                             min: 0,
-                            max: 200,
+                            max: 20,
                             position: 'left',
                             axisLine: {
                                 lineStyle: {
@@ -72,7 +72,7 @@
                             type: 'value',
                             name: '订单',
                             min: 0,
-                            max: 200,
+                            max: 20,
                             position: 'right',
                             axisLine: {
                                 lineStyle: {

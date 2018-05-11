@@ -38,25 +38,6 @@ export const apiAllCount = () => fetch('/statis/api/count');
 export const apiAllRecord = () => fetch('/statis/api/all');
 
 /**
- * 用户注册量
- */
-
-export const userCount = date => fetch('/statis/user/' + date + '/count');
-
-/**
- * 某一天订单数量
- */
-
-export const orderCount = date => fetch('/statis/order/' + date + '/count');
-
-
-/**
- * 某一天管理员注册量
- */
-
-export const adminDayCount = date => fetch('/statis/admin/' + date + '/count');
-
-/**
  * 管理员列表
  */
 
@@ -66,7 +47,9 @@ export const adminList = data => fetch('/admin/list', data);
  * 管理员数量
  */
 
-export const adminCount = () => fetch('/admin/count');
+export const adminCount = data => fetch('/admin/count', {
+    date: data || ""
+});
 
 /**
  * 获取定位城市
@@ -80,7 +63,7 @@ export const cityGuess = () => fetch('/v1/cities', {
  * 添加商铺
  */
 
-export const addShop = data => fetch('/shopping/addShop', data, 'POST');
+export const addShop = data => fetch('/shop/addShop', data, 'POST');
 
 /**
  * 获取搜索地址
@@ -187,7 +170,9 @@ export const getUserList = data => fetch('/user/list', data);
  * 获取用户数量
  */
 
-export const getUserCount = data => fetch('/user/count', data);
+export const getUserCount = data => fetch('/user/count', {
+    date: data || ""
+});
 
 /**
  * 获取订单列表
@@ -199,7 +184,9 @@ export const getOrderList = data => fetch('/orders/list', data);
  * 获取订单数量
  */
 
-export const getOrderCount = data => fetch('/orders/count', data);
+export const getOrderCount = data => fetch('/orders/count', {
+    date: data || ""
+});
 
 /**
  * 获取用户信息
