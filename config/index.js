@@ -34,6 +34,7 @@ module.exports = {
         '/shop',
         '/goods',
         '/orders',
+        '/common',
         '/bos',
         '/member',
         '/promotion',

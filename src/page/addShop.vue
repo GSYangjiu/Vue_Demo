@@ -16,7 +16,7 @@
                             style="width:100%"
                             @select="addressSelect">
                         </el-autocomplete>
-                        <span>当前城市：{{city.name}}</span>
+                        <span>当前城市：{{city}}</span>
                     </el-form-item>
                     <el-form-item label="联系电话" prop="phone">
                         <el-input v-model.number="formData.phone" maxLength="11"></el-input>
@@ -243,7 +243,12 @@
         methods: {
             async initData() {
                 try {
-                    //this.city = await cityGuess();
+                    const res = await cityGuess();
+                    if (res.status == 10000) {
+                        this.city = res.info
+                    } else {
+                        console.log('获取城市信息失败', err);
+                    }
                     const categories = await foodCategory();
                     categories.forEach(item => {
                         if (item.child.length) {

@@ -55,7 +55,7 @@ export const adminCount = data => fetch('/admin/count', {
  * 获取定位城市
  */
 
-export const cityGuess = () => fetch('/v1/cities', {
+export const cityGuess = () => fetch('/common/cities', {
     type: 'guess'
 });
 

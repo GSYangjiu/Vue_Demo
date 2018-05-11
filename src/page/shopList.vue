@@ -82,7 +82,7 @@
                             style="width: 100%;"
                             @select="addressSelect"
                         ></el-autocomplete>
-                        <span>当前城市：{{city.name}}</span>
+                        <span>当前城市：{{city}}</span>
                     </el-form-item>
                     <el-form-item label="店铺介绍" label-width="100px">
                         <el-input v-model="selectTable.description"></el-input>
@@ -161,7 +161,12 @@
         methods: {
             async initData() {
                 try {
-                    //this.city = await cityGuess();
+                    const res = await cityGuess();
+                    if (res.status == 10000) {
+                        this.city = res.info
+                    } else {
+                        console.log('获取城市信息失败', err);
+                    }
                     const countData = await getResturantsCount();
                     if (countData.status == 10000) {
                         this.count = countData.map.count;
@@ -200,7 +205,6 @@
                 }
             },
             async getResturants() {
-                const {latitude, longitude} = this.city;
                 const restaurants = await getResturants({offset: this.offset, limit: this.limit});
                 this.tableData = [];
                 restaurants.forEach(item => {
