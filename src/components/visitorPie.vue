@@ -12,6 +12,26 @@
     import 'echarts/lib/component/legend';
 
     export default {
+        data() {
+            return {
+                tableData: [{
+                    count: 20,
+                    name: '武汉'
+                }, {
+                    count: 10,
+                    name: '深圳'
+                }, {
+                    count: 5,
+                    name: '上海'
+                }, {
+                    count: 4,
+                    name: '南京'
+                }, {
+                    count: 10,
+                    name: '其他'
+                }]
+            }
+        },
         mounted() {
             this.myChart = echarts.init(document.getElementById('visitorpie'));
             this.initData();
@@ -19,6 +39,14 @@
         props: ['pieData'],
         methods: {
             initData() {
+                const tableDataTemp = this.pieData;
+                tableDataTemp.forEach(item => {
+                    const tableItem = {
+                        value: item.count,
+                        name: item.city,
+                    };
+                    this.tableData.push(tableItem)
+                });
                 const option = {
                     title: {
                         text: '用户分布',
@@ -40,13 +68,7 @@
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '60%'],
-                            data: [
-                                {value: this.pieData.beijing, name: '北京'},
-                                {value: this.pieData.shanghai, name: '上海'},
-                                {value: this.pieData.shenzhen, name: '深圳'},
-                                {value: this.pieData.hangzhou, name: '杭州'},
-                                {value: this.pieData.qita, name: '其他'}
-                            ],
+                            data: this.tableData,
                             itemStyle: {
                                 emphasis: {
                                     shadowBlur: 10,
@@ -57,7 +79,6 @@
                         }
                     ]
                 };
-
                 this.myChart.setOption(option);
             }
         },

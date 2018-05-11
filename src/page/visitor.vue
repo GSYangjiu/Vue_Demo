@@ -27,8 +27,8 @@
             async initData() {
                 try {
                     const res = await getUserCity();
-                    if (res.status == 1) {
-                        this.pieData = res.user_city;
+                    if (res.status == 10000) {
+                        this.pieData = res.map.count;
                     } else {
                         throw new Error(res)
                     }

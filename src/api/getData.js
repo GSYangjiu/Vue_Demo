@@ -204,4 +204,4 @@ export const getAddressById = address_id => fetch('/user/address/' + address_id)
  * 获取用户分布信息
  */
 
-export const getUserCity = () => fetch('/v1/user/city/count');
+export const getUserCity = () => fetch('/user/city/count');
