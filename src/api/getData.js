@@ -76,12 +76,6 @@ export const searchplace = (cityid, value) => fetch('/v1/pois', {
 });
 
 /**
- * 获取当前店铺食品种类
- */
-
-export const getCategory = restaurant_id => fetch('/shopping/getcategory/' + restaurant_id);
-
-/**
  * 添加食品种类
  */
 
@@ -92,7 +86,7 @@ export const addCategory = data => fetch('/shopping/addcategory', data, 'POST');
  * 添加食品
  */
 
-export const addFood = data => fetch('/shopping/addfood', data, 'POST');
+export const addFood = data => fetch('/goods/addFood', data, 'POST');
 
 
 /**

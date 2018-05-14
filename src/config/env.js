@@ -19,10 +19,10 @@ let baseImgPath;
 }*/
 if (process.env.NODE_ENV == 'development') {
     baseUrl = 'http://localhost:9441';
-    baseImgPath = 'http://localhost:9441/img/';
+    baseImgPath = 'http://localhost:8080/';
 } else {
     baseUrl = 'http://localhost:8080';
-    baseImgPath = 'http://cangdu.org:8001/img/';
+    baseImgPath = 'http://localhost:8080/';
 }
 
 export {

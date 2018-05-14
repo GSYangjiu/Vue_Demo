@@ -100,7 +100,7 @@
                     <el-form-item label="商铺图片" label-width="100px">
                         <el-upload
                             class="avatar-uploader"
-                            :action="baseUrl + '/v1/addimg/shop'"
+                            :action="baseUrl + '/common/addImg/shop'"
                             :show-file-list="false"
                             :on-success="handleServiceAvatarScucess"
                             :before-upload="beforeAvatarUpload">
@@ -282,8 +282,8 @@
                 this.address = {address, latitude, longitude};
             },
             handleServiceAvatarScucess(res, file) {
-                if (res.status == 1) {
-                    this.selectTable.image_path = res.image_path;
+                if (res.status == 10000) {
+                    this.foodForm.image_path = res.info;
                 } else {
                     this.$message.error('上传图片失败！');
                 }

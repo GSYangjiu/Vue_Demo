@@ -97,7 +97,7 @@
                     <el-form-item label="食品图片" label-width="100px">
                         <el-upload
                             class="avatar-uploader"
-                            :action="baseUrl + '/v1/addimg/food'"
+                            :action="baseUrl + '/common/addImg/food'"
                             :show-file-list="false"
                             :on-success="handleServiceAvatarScucess"
                             :before-upload="beforeAvatarUpload">
@@ -344,8 +344,8 @@
                 }
             },
             handleServiceAvatarScucess(res, file) {
-                if (res.status == 1) {
-                    this.selectTable.image_path = res.image_path;
+                if (res.status == 10000) {
+                    this.foodForm.image_path = res.info;
                 } else {
                     this.$message.error('上传图片失败！');
                 }

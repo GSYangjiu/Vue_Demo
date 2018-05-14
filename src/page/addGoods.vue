@@ -7,7 +7,8 @@
                 <el-form :model="categoryForm" ref="categoryForm" label-width="110px" class="form">
                     <el-row class="category_select">
                         <el-form-item label="食品种类">
-                            <el-select v-model="categoryForm.categorySelect" :placeholder="selectValue.label" style="width:100%;">
+                            <el-select v-model="categoryForm.categorySelect" :placeholder="selectValue.label"
+                                       style="width:100%;">
                                 <el-option
                                     v-for="item in categoryForm.categoryList"
                                     :key="item.value"
@@ -50,7 +51,7 @@
                     <el-form-item label="上传食品图片">
                         <el-upload
                             class="avatar-uploader"
-                            :action="baseUrl + '/v1/addimg/food'"
+                            :action="baseUrl + '/common/addImg/food'"
                             :show-file-list="false"
                             :on-success="uploadImg"
                             :before-upload="beforeImgUpload">
@@ -74,14 +75,16 @@
                     </el-form-item>
                     <el-row v-if="foodSpecs == 'one'">
                         <el-form-item label="包装费">
-                            <el-input-number v-model="foodForm.specs[0].packing_fee" :min="0" :max="100"></el-input-number>
+                            <el-input-number v-model="foodForm.specs[0].packing_fee" :min="0"
+                                             :max="100"></el-input-number>
                         </el-form-item>
                         <el-form-item label="价格">
                             <el-input-number v-model="foodForm.specs[0].price" :min="0" :max="10000"></el-input-number>
                         </el-form-item>
                     </el-row>
                     <el-row v-else style="overflow: auto; text-align: center;">
-                        <el-button type="primary" @click="dialogFormVisible = true" style="margin-bottom: 10px;">添加规格</el-button>
+                        <el-button type="primary" @click="dialogFormVisible = true" style="margin-bottom: 10px;">添加规格
+                        </el-button>
                         <el-table
                             :data="foodForm.specs"
                             style="margin-bottom: 20px;"
@@ -98,12 +101,13 @@
                                 prop="price"
                                 label="价格">
                             </el-table-column>
-                            <el-table-column label="操作" >
+                            <el-table-column label="操作">
                                 <template slot-scope="scope">
                                     <el-button
                                         size="small"
                                         type="danger"
-                                        @click="handleDelete(scope.$index)">删除</el-button>
+                                        @click="handleDelete(scope.$index)">删除
+                                    </el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -136,10 +140,11 @@
 
 <script>
     import headTop from '@/components/headTop'
-    import {getCategory, addCategory, addFood} from '@/api/getData'
+    import {getFoodTypeList, addCategory, addFood} from '@/api/getData'
     import {baseUrl, baseImgPath} from '@/config/env'
+
     export default {
-        data(){
+        data() {
             return {
                 baseUrl,
                 baseImgPath,
@@ -164,7 +169,7 @@
                 },
                 foodrules: {
                     name: [
-                        { required: true, message: '请输入食品名称', trigger: 'blur' },
+                        {required: true, message: '请输入食品名称', trigger: 'blur'},
                     ],
                 },
                 attributes: [{
@@ -184,7 +189,7 @@
                 },
                 specsFormrules: {
                     specs: [
-                        { required: true, message: '请输入规格', trigger: 'blur' },
+                        {required: true, message: '请输入规格', trigger: 'blur'},
                     ],
                 }
             }
@@ -192,11 +197,11 @@
         components: {
             headTop,
         },
-        created(){
+        created() {
             if (this.$route.query.restaurant_id) {
                 this.restaurant_id = this.$route.query.restaurant_id;
-            }else{
-                this.restaurant_id = Math.ceil(Math.random()*10);
+            } else {
+                this.restaurant_id = Math.ceil(Math.random() * 10);
                 this.$msgbox({
                     title: '提示',
                     message: '添加食品需要选择一个商铺，先去就去选择商铺吗？',
@@ -220,28 +225,25 @@
             this.initData();
         },
         computed: {
-            selectValue: function (){
-                return this.categoryForm.categoryList[this.categoryForm.categorySelect]||{}
+            selectValue: function () {
+                return this.categoryForm.categoryList[this.categoryForm.categorySelect] || {}
             }
         },
         methods: {
-            async initData(){
-                try{
-                    const result = await getCategory(this.restaurant_id);
-                    if (result.status == 1) {
-                        result.category_list.map((item, index) => {
-                            item.value = index;
-                            item.label = item.name;
-                        })
-                        this.categoryForm.categoryList = result.category_list;
-                    }else{
-                        console.log(result)
-                    }
-                }catch(err){
+            async initData() {
+                try {
+                    const menu = await getFoodTypeList();
+                    console.log(menu);
+                    menu.forEach((item, index) => {
+                        item.value = index;
+                        item.label = item.type;
+                    })
+                    this.categoryForm.categoryList = menu;
+                } catch (err) {
                     console.log(err)
                 }
             },
-            addCategoryFun(){
+            addCategoryFun() {
                 this.showAddCategory = !this.showAddCategory;
             },
             submitcategoryForm(categoryForm) {
@@ -252,7 +254,7 @@
                             description: this.categoryForm.description,
                             restaurant_id: this.restaurant_id,
                         }
-                        try{
+                        try {
                             const result = await addCategory(params);
                             if (result.status == 1) {
                                 this.initData();
@@ -264,7 +266,7 @@
                                     message: '添加成功'
                                 });
                             }
-                        }catch(err){
+                        } catch (err) {
                             console.log(err)
                         }
                     } else {
@@ -278,9 +280,9 @@
                 });
             },
             uploadImg(res, file) {
-                if (res.status == 1) {
-                    this.foodForm.image_path = res.image_path;
-                }else{
+                if (res.status == 10000) {
+                    this.foodForm.image_path = res.info;
+                } else {
                     this.$message.error('上传图片失败！');
                 }
             },
@@ -296,14 +298,14 @@
                 }
                 return isRightType && isLt2M;
             },
-            addspecs(){
+            addspecs() {
                 this.foodForm.specs.push({...this.specsForm});
                 this.specsForm.specs = '';
                 this.specsForm.packing_fee = 0;
                 this.specsForm.price = 20;
                 this.dialogFormVisible = false;
             },
-            handleDelete(index){
+            handleDelete(index) {
                 this.foodForm.specs.splice(index, 1);
             },
             tableRowClassName(row, index) {
@@ -314,7 +316,7 @@
                 }
                 return '';
             },
-            addFood(foodForm){
+            addFood(foodForm) {
                 this.$refs[foodForm].validate(async (valid) => {
                     if (valid) {
                         const params = {
@@ -322,10 +324,10 @@
                             category_id: this.selectValue.id,
                             restaurant_id: this.restaurant_id,
                         }
-                        try{
+                        try {
                             const result = await addFood(params);
                             if (result.status == 1) {
-                                console.log(result)
+                                console.log(result);
                                 this.$message({
                                     type: 'success',
                                     message: '添加成功'
@@ -342,13 +344,13 @@
                                         price: 20,
                                     }],
                                 }
-                            }else{
+                            } else {
                                 this.$message({
                                     type: 'error',
                                     message: result.message
                                 });
                             }
-                        }catch(err){
+                        } catch (err) {
                             console.log(err)
                         }
                     } else {
@@ -367,45 +369,53 @@
 
 <style lang="less">
     @import '../style/mixin';
-    .form{
+
+    .form {
         min-width: 400px;
         margin-bottom: 30px;
-        &:hover{
-            box-shadow: 0 0 8px 0 rgba(232,237,250,.6), 0 2px 4px 0 rgba(232,237,250,.5);
+        &:hover {
+            box-shadow: 0 0 8px 0 rgba(232, 237, 250, .6), 0 2px 4px 0 rgba(232, 237, 250, .5);
             border-radius: 6px;
             transition: all 400ms;
         }
     }
-    .food_form{
+
+    .food_form {
         border: 1px solid #eaeefb;
         padding: 10px 10px 0;
     }
-    .form_header{
+
+    .form_header {
         text-align: center;
         margin-bottom: 10px;
     }
-    .category_select{
+
+    .category_select {
         border: 1px solid #eaeefb;
         padding: 10px 30px 10px 10px;
         border-top-right-radius: 6px;
         border-top-left-radius: 6px;
     }
-    .add_category_row{
+
+    .add_category_row {
         height: 0;
         overflow: hidden;
         transition: all 400ms;
         background: #f9fafc;
     }
-    .showEdit{
+
+    .showEdit {
         height: 185px;
     }
-    .add_category{
+
+    .add_category {
         background: #f9fafc;
         padding: 10px 30px 0px 10px;
         border: 1px solid #eaeefb;
         border-top: none;
     }
-    .add_category_button{
+
+    .add_category_button {
         text-align: center;
         line-height: 40px;
         border-bottom-right-radius: 6px;
@@ -413,21 +423,22 @@
         border: 1px solid #eaeefb;
         border-top: none;
         transition: all 400ms;
-        &:hover{
+        &:hover {
             background: #f9fafc;
-            span, .edit_icon{
+            span, .edit_icon {
                 color: #20a0ff;
             }
         }
-        span{
+        span {
             .sc(14px, #999);
             transition: all 400ms;
         }
-        .edit_icon{
+        .edit_icon {
             color: #ccc;
             transition: all 400ms;
         }
     }
+
     .avatar-uploader .el-upload {
         border: 1px dashed #d9d9d9;
         border-radius: 6px;
@@ -435,9 +446,11 @@
         position: relative;
         overflow: hidden;
     }
+
     .avatar-uploader .el-upload:hover {
         border-color: #20a0ff;
     }
+
     .avatar-uploader-icon {
         font-size: 28px;
         color: #8c939d;
@@ -446,12 +459,14 @@
         line-height: 120px;
         text-align: center;
     }
+
     .avatar {
         width: 120px;
         height: 120px;
         display: block;
     }
-    .cell{
+
+    .cell {
         text-align: center;
     }
 </style>

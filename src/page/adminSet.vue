@@ -13,7 +13,7 @@
                     <span>更换头像：</span>
                     <el-upload
                         class="avatar-uploader"
-                        :action="baseUrl + '/admin/update/avatar/' + adminInfo.id"
+                        :action="baseUrl + '/common/addImg/admin'"
                         :show-file-list="false"
                         :on-success="uploadImg"
                         :before-upload="beforeImgUpload">
@@ -48,10 +48,10 @@
         },
         methods: {
             uploadImg(res, file) {
-                if (res.status == 1) {
-                    this.adminInfo.avatar = res.image_path;
+                if (res.status == 10000) {
+                    this.foodForm.image_path = res.info;
                 } else {
-                    this.$message.error('上传图像失败！')
+                    this.$message.error('上传图片失败！');
                 }
             },
 
