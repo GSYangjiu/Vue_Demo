@@ -64,7 +64,7 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="currentPage"
-                    :page-size="20"
+                    :page-size="10"
                     layout="total, prev, pager, next"
                     :total="count">
                 </el-pagination>
@@ -143,7 +143,7 @@
                 baseImgPath,
                 city: {},
                 offset: 0,
-                limit: 20,
+                limit: 10,
                 count: 0,
                 tableData: [],
                 currentPage: 1,
@@ -205,7 +205,7 @@
                 }
             },
             async getResturants() {
-                const restaurants = await getResturants({offset: this.offset, limit: this.limit});
+                const restaurants = await getResturants({page: this.offset, size: this.limit});
                 this.tableData = [];
                 restaurants.forEach(item => {
                     const tableData = {};
