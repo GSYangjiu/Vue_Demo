@@ -24,8 +24,8 @@
                     <el-form-item label="店铺简介" prop="description">
                         <el-input v-model="formData.description"></el-input>
                     </el-form-item>
-                    <el-form-item label="店铺标语" prop="promotion_info">
-                        <el-input v-model="formData.promotion_info"></el-input>
+                    <el-form-item label="店铺标语" prop="promotionInfo">
+                        <el-input v-model="formData.promotionInfo"></el-input>
                     </el-form-item>
                     <el-form-item label="店铺分类">
                         <el-cascader
@@ -36,11 +36,11 @@
                     </el-form-item>
                     <el-form-item label="店铺特点" style="white-space: nowrap;">
                         <span>品牌保证</span>
-                        <el-switch on-text="" off-text="" v-model="formData.is_premium"></el-switch>
+                        <el-switch on-text="" off-text="" v-model="formData.premium"></el-switch>
                         <span>蜂鸟专送</span>
-                        <el-switch on-text="" off-text="" v-model="formData.delivery_mode"></el-switch>
+                        <el-switch on-text="" off-text="" v-model="formData.deliveryMode"></el-switch>
                         <span>新开店铺</span>
-                        <el-switch on-text="" off-text="" v-model="formData.new"></el-switch>
+                        <el-switch on-text="" off-text="" v-model="formData.news"></el-switch>
                     </el-form-item>
                     <el-form-item style="white-space: nowrap;">
                         <span>外卖保</span>
@@ -50,11 +50,11 @@
                         <span>开发票</span>
                         <el-switch on-text="" off-text="" v-model="formData.piao"></el-switch>
                     </el-form-item>
-                    <el-form-item label="配送费" prop="float_delivery_fee">
-                        <el-input-number v-model="formData.float_delivery_fee" :min="0" :max="20"></el-input-number>
+                    <el-form-item label="配送费" prop="floatDeliveryFee">
+                        <el-input-number v-model="formData.floatDeliveryFee" :min="0" :max="20"></el-input-number>
                     </el-form-item>
-                    <el-form-item label="起送价" prop="float_minimum_order_amount">
-                        <el-input-number v-model="formData.float_minimum_order_amount" :min="0" :max="100">
+                    <el-form-item label="起送价" prop="floatMinimumOrderAmount">
+                        <el-input-number v-model="formData.floatMinimumOrderAmount" :min="0" :max="100">
                         </el-input-number>
                     </el-form-item>
                     <el-form-item label="营业时间" style="white-space: nowrap;">
@@ -86,7 +86,7 @@
                             :show-file-list="false"
                             :on-success="handleShopAvatarScucess"
                             :before-upload="beforeAvatarUpload">
-                            <img v-if="formData.image_path" :src="baseImgPath + formData.image_path" class="avatar">
+                            <img v-if="formData.imagePath" :src="baseImgPath + formData.imagePath" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                     </el-form-item>
@@ -97,8 +97,8 @@
                             :show-file-list="false"
                             :on-success="handleBusinessAvatarScucess"
                             :before-upload="beforeAvatarUpload">
-                            <img v-if="formData.business_license_image"
-                                 :src="baseImgPath + formData.business_license_image" class="avatar">
+                            <img v-if="formData.businessLicenseImage"
+                                 :src="baseImgPath + formData.businessLicenseImage" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                     </el-form-item>
@@ -109,8 +109,8 @@
                             :show-file-list="false"
                             :on-success="handleServiceAvatarScucess"
                             :before-upload="beforeAvatarUpload">
-                            <img v-if="formData.catering_service_license_image"
-                                 :src="baseImgPath + formData.catering_service_license_image" class="avatar">
+                            <img v-if="formData.cateringServiceLicenseImage"
+                                 :src="baseImgPath + formData.cateringServiceLicenseImage" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                     </el-form-item>
@@ -130,7 +130,7 @@
                         align="cneter"
                         :row-class-name="tableRowClassName">
                         <el-table-column
-                            prop="icon_name"
+                            prop="iconName"
                             label="活动标题"
                             align="cneter"
                             width="120">
@@ -185,20 +185,20 @@
                     longitude: '',
                     description: '', //介绍
                     phone: '',
-                    promotion_info: '',
-                    float_delivery_fee: 5, //运费
-                    float_minimum_order_amount: 20, //起价
-                    is_premium: true,
-                    delivery_mode: true,
-                    new: true,
+                    promotionInfo: '',
+                    floatDeliveryFee: 5, //运费
+                    floatMinimumOrderAmount: 20, //起价
+                    premium: true,
+                    deliveryMode: true,
+                    news: true,
                     bao: true,
                     zhun: true,
                     piao: true,
                     startTime: '',
                     endTime: '',
-                    image_path: '',
-                    business_license_image: '',
-                    catering_service_license_image: '',
+                    imagePath: '',
+                    businessLicenseImage: '',
+                    cateringServiceLicenseImage: '',
                 },
                 rules: {
                     name: [
@@ -227,7 +227,7 @@
                 }],
                 activityValue: '满减优惠',
                 activities: [{
-                    icon_name: '减',
+                    iconName: '减',
                     name: '满减优惠',
                     description: '满30减5，满60减8',
                 }],
@@ -298,22 +298,22 @@
             },
 
             handleShopAvatarScucess(res, file) {
-                if (res.status == 1) {
-                    this.formData.image_path = res.image_path;
+                if (res.status == 10000) {
+                    this.formData.imagePath = res.info;
                 } else {
                     this.$message.error('上传图片失败！');
                 }
             },
             handleBusinessAvatarScucess(res, file) {
-                if (res.status == 1) {
-                    this.formData.business_license_image = res.image_path;
+                if (res.status == 10000) {
+                    this.formData.businessLicenseImage = res.info;
                 } else {
                     this.$message.error('上传图片失败！');
                 }
             },
             handleServiceAvatarScucess(res, file) {
                 if (res.status == 10000) {
-                    this.foodForm.image_path = res.info;
+                    this.formData.cateringServiceLicenseImage = res.info;
                 } else {
                     this.$message.error('上传图片失败！');
                 }
@@ -355,28 +355,28 @@
                     switch (this.activityValue) {
                         case '满减优惠':
                             newObj = {
-                                icon_name: '减',
+                                iconName: '减',
                                 name: '满减优惠',
                                 description: value,
                             }
                             break;
                         case '优惠大酬宾':
                             newObj = {
-                                icon_name: '特',
+                                iconName: '特',
                                 name: '优惠大酬宾',
                                 description: value,
                             }
                             break;
                         case '新用户立减':
                             newObj = {
-                                icon_name: '新',
+                                iconName: '新',
                                 name: '新用户立减',
                                 description: value,
                             }
                             break;
                         case '进店领券':
                             newObj = {
-                                icon_name: '领',
+                                iconName: '领',
                                 name: '进店领券',
                                 description: value,
                             }
@@ -401,7 +401,7 @@
                         })
                         try {
                             let result = await addShop(this.formData);
-                            if (result.status == 1) {
+                            if (result.status == 10000) {
                                 this.$message({
                                     type: 'success',
                                     message: '添加成功'
@@ -413,31 +413,31 @@
                                     longitude: '',
                                     description: '', //介绍
                                     phone: '',
-                                    promotion_info: '',
-                                    float_delivery_fee: 5, //运费
-                                    float_minimum_order_amount: 20, //起价
-                                    is_premium: true,
-                                    delivery_mode: true,
-                                    new: true,
+                                    promotionInfo: '',
+                                    floatDeliveryFee: 5, //运费
+                                    floatMinimumOrderAmount: 20, //起价
+                                    premium: true,
+                                    deliveryMode: true,
+                                    news: true,
                                     bao: true,
                                     zhun: true,
                                     piao: true,
                                     startTime: '',
                                     endTime: '',
-                                    image_path: '',
-                                    business_license_image: '',
-                                    catering_service_license_image: '',
+                                    imagePath: '',
+                                    businessLicenseImage: '',
+                                    cateringServiceLicenseImage: '',
                                 };
                                 this.selectedCategory = ['快餐便当', '简餐'];
                                 this.activities = [{
-                                    icon_name: '减',
+                                    iconName: '减',
                                     name: '满减优惠',
                                     description: '满30减5，满60减8',
                                 }];
                             } else {
                                 this.$message({
                                     type: 'error',
-                                    message: result.message
+                                    message: result.error
                                 });
                             }
                             console.log(result)

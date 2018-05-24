@@ -49,7 +49,7 @@
         methods: {
             uploadImg(res, file) {
                 if (res.status == 10000) {
-                    this.foodForm.image_path = res.info;
+                    this.adminInfo.avatar = res.info;
                 } else {
                     this.$message.error('上传图片失败！');
                 }
