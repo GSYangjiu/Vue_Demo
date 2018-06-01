@@ -65,7 +65,7 @@
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
-                this.offset = (val - 1) * this.limit;
+                this.offset = val - 1;
                 this.getAdminList()
             },
             async getAdminList() {

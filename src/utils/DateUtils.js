@@ -1,4 +1,4 @@
-export function dateFormat(date, format) {
+export function dateFormat(date, format = 'yyyy-MM-dd hh:mm:ss') {
 
     if (!date) {
         return ''
@@ -10,7 +10,6 @@ export function dateFormat(date, format) {
             return '无效时间戳'
         }
     }
-    format = format || 'yyyy-MM-dd hh:mm:ss'
     const o = {
         "M+": date.getMonth() + 1, //月份
         "d+": date.getDate(), //日

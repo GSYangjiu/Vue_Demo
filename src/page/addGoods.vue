@@ -326,7 +326,7 @@
                         }
                         try {
                             const result = await addFood(params);
-                            if (result.status == 1) {
+                            if (result.status == 10000) {
                                 console.log(result);
                                 this.$message({
                                     type: 'success',
